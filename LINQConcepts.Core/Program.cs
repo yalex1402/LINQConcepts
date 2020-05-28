@@ -1,24 +1,19 @@
-﻿using LINQConcepts.Core.Data;
-using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using LINQConcepts.Core.LINQ;
 
 namespace LINQConcepts.Core
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            DataContext dataContext = new DataContext();
+            LinqStatements querys = new LinqStatements();
+            // Show all students ordered by average
+            querys.StudentsByAverage();
+            //Show students who have an average greater than average. This is passed as a parameter
+            querys.StudentsByAverage(3.5);
+            //First student who has a name like the name passed as parameter
+            querys.SearchStudent("P");
 
-            var query = dataContext.Students.OrderByDescending(s => s.Average);
-
-            foreach (var student in query.Take(1))
-            {
-                Console.WriteLine($"{student.LastName} {student.Name}:{student.Average}");
-            }
         }
-
-        
     }
 }
