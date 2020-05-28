@@ -13,6 +13,8 @@ namespace LINQConcepts.Core
             querys.StudentsByAverage(3.5);
             //First student who has a name like the name passed as parameter
             querys.SearchStudent("P");
+            //Info Students + Schools
+            querys.StudentsBySchool();
 
         }
     }

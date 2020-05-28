@@ -15,5 +15,7 @@ namespace LINQConcepts.Core.Models
         public int Age { get; set; }
 
         public double Average { get; set; }
+
+        public int SchoolId { get; set; }
     }
 }

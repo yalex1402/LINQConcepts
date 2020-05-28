@@ -60,9 +60,36 @@ namespace LINQConcepts.Core.LINQ
             LineBreak();
         }
 
+        public void StudentsBySchool()
+        {
+            var query = _dataContext.Students
+                .Join(_dataContext.Schools, s => s.SchoolId, sc => sc.Id,
+                    (s, sc) => new
+                    {
+                        SchoolData = sc,
+                        StudentData = s
+                    }).OrderBy(sc => sc.SchoolData.Name).ThenByDescending(s => s.StudentData.Average);
+
+            var query2 = from student in _dataContext.Students
+                         join school in _dataContext.Schools
+                            on student.SchoolId equals school.Id
+                         orderby school.Name ascending, student.Average descending
+                         select new
+                         {
+                             SchoolData = school,
+                             StudentData = student
+                         };
+
+            foreach (var item in query)
+            {
+                Console.WriteLine($"{item.SchoolData.Name} : {item.StudentData.Name} - AVG: {item.StudentData.Average}");
+            }
+        }
+
         private void LineBreak()
         {
             Console.WriteLine("---------------\n");
         }
+
     }
 }
