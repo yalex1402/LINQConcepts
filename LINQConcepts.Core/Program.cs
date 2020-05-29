@@ -15,6 +15,10 @@ namespace LINQConcepts.Core
             querys.SearchStudent("P");
             //Info Students + Schools
             querys.StudentsBySchool();
+            //Count of students by school
+            querys.CountStudentsBySchool();
+            //Get the student who has the best average by school
+            querys.BestStudentBySchool();
 
         }
     }

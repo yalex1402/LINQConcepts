@@ -84,6 +84,63 @@ namespace LINQConcepts.Core.LINQ
             {
                 Console.WriteLine($"{item.SchoolData.Name} : {item.StudentData.Name} - AVG: {item.StudentData.Average}");
             }
+            LineBreak();
+        }
+
+        public void CountStudentsBySchool()
+        {
+            var query = _dataContext.Students
+                        .Join(_dataContext.Schools, s => s.SchoolId, sc => sc.Id,
+                            (s, sc) => new
+                            {
+                                SchoolData = sc,
+                                StudentData = s
+                            })
+                        .GroupBy(sc=> sc.SchoolData.Name);
+
+            var query2 = from student in _dataContext.Students
+                         join school in _dataContext.Schools
+                            on student.SchoolId equals school.Id
+                         group school by school.Name;
+
+            foreach (var item in query)
+            {
+                Console.WriteLine($"{item.Key} has {item.Count()} students");
+            }
+            LineBreak();
+        }
+
+        public void BestStudentBySchool()
+        {
+            var query = _dataContext.Schools.GroupJoin(_dataContext.Students,
+                                                        sc => sc.Id,
+                                                        s => s.SchoolId, 
+                                                        (sc,g) => new 
+                                                        {
+                                                            SchoolData = sc,
+                                                            StudentData = g
+                                                        }).OrderBy(sc => sc.SchoolData.Name);
+
+            var query2 = from school in _dataContext.Schools
+                         join student in _dataContext.Students
+                            on school.Id equals student.SchoolId
+                            into schoolGroup
+                         orderby school.Name ascending
+                         select new
+                         {
+                             SchoolData = school,
+                             StudentData = schoolGroup
+                         };
+
+            foreach (var item in query)
+            {
+                Console.WriteLine(item.SchoolData.Name);
+                foreach (var student in item.StudentData.OrderByDescending(s => s.Average).Take(1))
+                {
+                    Console.WriteLine($"\t{student.Name} - AVG: {student.Average}");
+                }
+            }
+            LineBreak();
         }
 
         private void LineBreak()
