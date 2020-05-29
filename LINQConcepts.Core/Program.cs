@@ -19,6 +19,8 @@ namespace LINQConcepts.Core
             querys.CountStudentsBySchool();
             //Get the student who has the best average by school
             querys.BestStudentBySchool();
+            //Show the average of notes in the school
+            querys.NoteAverageBySchool();
 
         }
     }

@@ -143,6 +143,39 @@ namespace LINQConcepts.Core.LINQ
             LineBreak();
         }
 
+        public void NoteAverageBySchool()
+        {
+            var query = _dataContext.Students
+                        .Join(_dataContext.Schools, s => s.SchoolId, sc => sc.Id,
+                            (s, sc) => new
+                            {
+                                SchoolData = sc,
+                                StudentData = s
+                            })
+                        .GroupBy(sc => sc.SchoolData.Name)
+                        .Select(sc => new 
+                        { 
+                            SchoolName = sc.Key,
+                            Avg = sc.Average(g => g.StudentData.Average)
+                        });
+
+            var query2 = from student in _dataContext.Students
+                         join school in _dataContext.Schools
+                            on student.SchoolId equals school.Id
+                         group new { student, school} by school.Name into grp
+                         select new
+                         {
+                             SchoolName = grp.Key,
+                             Avg = grp.Average(g => g.student.Average)
+                         };
+
+            foreach (var item in query)
+            {
+                Console.WriteLine($"School Name: {item.SchoolName} \n\t AVG: {item.Avg}");
+            }
+            LineBreak();
+        }
+
         private void LineBreak()
         {
             Console.WriteLine("---------------\n");
