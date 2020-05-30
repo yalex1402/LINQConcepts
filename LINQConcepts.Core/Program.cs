@@ -7,6 +7,8 @@ namespace LINQConcepts.Core
         private static void Main(string[] args)
         {
             LinqStatements querys = new LinqStatements();
+            LinqToXmlStatements querysXml = new LinqToXmlStatements();
+
             // Show all students ordered by average
             querys.StudentsByAverage();
             //Show students who have an average greater than average. This is passed as a parameter
@@ -21,6 +23,9 @@ namespace LINQConcepts.Core
             querys.BestStudentBySchool();
             //Show the average of notes in the school
             querys.NoteAverageBySchool();
+
+            querysXml.GetStudentsBySchool(1);
+            querysXml.GetStudentsBySchool(2);
 
         }
     }

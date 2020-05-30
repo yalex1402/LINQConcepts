@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace LINQConcepts.Core.Data
 {
@@ -22,6 +24,24 @@ namespace LINQConcepts.Core.Data
                 new School {Id = 1, Name = "Columbia North School", Country = "Columbia"},
                 new School{Id = 2,Name = "Bilingual FireStorm School",Country = "New York"}
             };
+            CreateXml();
+        }
+
+        public void CreateXml()
+        {
+            var document = new XDocument();
+            var studentsXml = new XElement("Students", 
+                        from student in Students 
+                        select new XElement("Student",
+                            new XAttribute("Id", student.Id),
+                            new XAttribute("Name", student.Name),
+                            new XAttribute("LastName", student.LastName),
+                            new XAttribute("Average", student.Average),
+                            new XAttribute("Age", student.Age),
+                            new XAttribute("SchoolId", student.SchoolId)
+                        ) );
+            document.Add(studentsXml);
+            document.Save("Students.xml");
         }
 
         public List<Student> Students { get; set; }
